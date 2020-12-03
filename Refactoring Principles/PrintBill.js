@@ -10,17 +10,20 @@ function statement(invoice, plays) {
         //print line for this order
         result += `${playFor(perf).name}: ${usd(amountFor(perf))} ${perf.audience} seats\n`;
     }
-    let totalAmount = 0;
-    for (let perf of invoice.performances) {
-        totalAmount += amountFor(perf);
-    }
 
+    let totalAmount = getTotalAmount();
     result += `Amount owed is ${usd(totalAmount)}\n`;
     result += `You earned  ${totalVolumeCredits()} Credits\n`;
     return result;
 }
 
-
+function getTotalAmount() {
+    let totalAmount = 0;
+    for (let perf of invoice.performances) {
+        totalAmount += amountFor(perf);
+    }
+    return totalAmount;
+}
 
 function totalVolumeCredits() {
     let volumeCredits = 0;
