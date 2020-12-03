@@ -11,19 +11,19 @@ function statement(invoice, plays) {
         volumeCredits += volumeCreditsFor(perf);
 
         //print line for this order
-        result += `${playFor(perf).name}: ${format(amountFor(perf) / 100)} ${perf.audience} seats\n`;
+        result += `${playFor(perf).name}: ${usd(amountFor(perf))} ${perf.audience} seats\n`;
         totalAmount += amountFor(perf);
 
     }
-    result += `Amount owed is ${format(totalAmount / 100)}\n`;
+    result += `Amount owed is ${usd(totalAmount)}\n`;
     result += `You earned Volume Credits : ${volumeCredits} volume Credits\n`;
     return result;
 }
 
-function format(aNumber) {
+function usd(aNumber) {
     return new Intl.NumberFormat("en-US", {
         style: "currency", currency: "USD", minimumFractionDigits: 2
-    }).format(aNumber);
+    }).format(aNumber / 100);
 }
 
 function volumeCreditsFor(aPerformance) {
