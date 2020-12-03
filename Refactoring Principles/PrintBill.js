@@ -10,54 +10,7 @@ function statement(invoice, plays) {
     function enrichPerformance(aPerformance) {
         const result = Object.assign({}, aPerformance);
         result.play = playFor(result);
-        return result;
-    }
-
-    function playFor(aPerformance) {
-        return plays[aPerformance.playID];
-    }
-}
-
-function renderPlainText(data, plays) {
-    let result = `Statement for ${data.customer}\n`;
-    for (let perf of data.performances) {
-        result += `${perf.play.name}: ${usd(amountFor(perf))} ${perf.audience} seats\n`;
-    }
-    result += `Amount owed is ${usd(getTotalAmount())}\n`;
-    result += `You earned  ${totalVolumeCredits()} Credits\n`;
-    return result;
-
-
-
-    function getTotalAmount() {
-        let result = 0;
-        for (let perf of data.performances) {
-            result += amountFor(perf);
-        }
-        return result;
-    }
-
-    function totalVolumeCredits() {
-        let result = 0;
-        for (let perf of data.performances) {
-            result += volumeCreditsFor(perf);
-        }
-        return result;
-    }
-
-    function usd(aNumber) {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency", currency: "USD", minimumFractionDigits: 2
-        }).format(aNumber / 100);
-    }
-
-    function volumeCreditsFor(aPerformance) {
-        let result = 0;
-        //add volume crredits
-        result += Math.max(aPerformance.audience - 30, 0);
-        //add extra credit for every 10 comedy attendees
-        if ("comedy" === aPerformance.play.type)
-            result += Math.floor(aPerformance.audience / 5);
+        result.amount = amountFor(result);
         return result;
     }
 
@@ -86,5 +39,52 @@ function renderPlainText(data, plays) {
         }
         return result;
     }
+}
+
+function renderPlainText(data, plays) {
+    let result = `Statement for ${data.customer}\n`;
+    for (let perf of data.performances) {
+        result += `${perf.play.name}: ${usd(perf.amount)} ${perf.audience} seats\n`;
+    }
+    result += `Amount owed is ${usd(getTotalAmount())}\n`;
+    result += `You earned  ${totalVolumeCredits()} Credits\n`;
+    return result;
+
+
+
+    function getTotalAmount() {
+        let result = 0;
+        for (let perf of data.performances) {
+            result += perf.amount;
+        }
+        return result;
+    }
+
+    function totalVolumeCredits() {
+        let result = 0;
+        for (let perf of data.performances) {
+            result += volumeCreditsFor(perf);
+        }
+        return result;
+    }
+
+    function usd(aNumber) {
+        return new Intl.NumberFormat("en-US", {
+            style: "currency", currency: "USD", minimumFractionDigits: 2
+        }).format(aNumber / 100);
+    }
+
+    function volumeCreditsFor(aPerformance) {
+        let result = 0;
+        //add volume crredits
+        result += Math.max(aPerformance.audience - 30, 0);
+        //add extra credit for every 10 comedy attendees
+        if ("comedy" === aPerformance.play.type)
+            result += Math.floor(aPerformance.audience / 5);
+        return result;
+    }
+
+
+
 }
 console.log(statement(invoice, plays));
