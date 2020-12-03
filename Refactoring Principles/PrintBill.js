@@ -17,19 +17,19 @@ function statement(invoice, plays) {
 }
 
 function getTotalAmount() {
-    let totalAmount = 0;
+    let result = 0;
     for (let perf of invoice.performances) {
-        totalAmount += amountFor(perf);
+        result += amountFor(perf);
     }
-    return totalAmount;
+    return result;
 }
 
 function totalVolumeCredits() {
-    let volumeCredits = 0;
+    let result = 0;
     for (let perf of invoice.performances) {
-        volumeCredits += volumeCreditsFor(perf);
+        result += volumeCreditsFor(perf);
     }
-    return volumeCredits;
+    return result;
 }
 
 function usd(aNumber) {
