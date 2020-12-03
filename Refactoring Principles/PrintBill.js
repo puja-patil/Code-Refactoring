@@ -52,18 +52,10 @@ function statement(invoice, plays) {
         return result;
     }
     function getTotalAmount(data) {
-        let result = 0;
-        for (let perf of data.performances) {
-            result += perf.amount;
-        }
-        return result;
+        return data.performances.reduce((total, p) => total + p.amount, 0);
     }
     function totalVolumeCredits(data) {
-        let result = 0;
-        for (let perf of data.performances) {
-            result += perf.volumeCredits;
-        }
-        return result;
+        return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
     }
 }
 
@@ -75,12 +67,6 @@ function renderPlainText(data, plays) {
     result += `Amount owed is ${usd(data.totalAmount)}\n`;
     result += `You earned  ${data.totalVolumeCredits} Credits\n`;
     return result;
-
-
-
-
-
-
 
     function usd(aNumber) {
         return new Intl.NumberFormat("en-US", {
