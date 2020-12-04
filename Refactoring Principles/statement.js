@@ -71,6 +71,16 @@ class PerformanceCalculator {
         }
         return result;
     }
+
+    get volumeCredits() {
+        let result = 0;
+        //add volume crredits
+        result += Math.max(this.performance.audience - 30, 0);
+        //add extra credit for every 10 comedy attendees
+        if ("comedy" === this.play.type)
+            result += Math.floor(this.performance.audience / 5);
+        return result;
+    }
 }
 
 //==============================================================================================================
@@ -100,13 +110,7 @@ function createStatementData(invoice, plays) {
         return new PerformanceCalculator(aPerformance, playFor(aPerformance)).amount;
     }
     function volumeCreditsFor(aPerformance) {
-        let result = 0;
-        //add volume crredits
-        result += Math.max(aPerformance.audience - 30, 0);
-        //add extra credit for every 10 comedy attendees
-        if ("comedy" === aPerformance.play.type)
-            result += Math.floor(aPerformance.audience / 5);
-        return result;
+        return new PerformanceCalculator(aPerformance, playFor(aPerformance)).volumeCredits;
     }
     function getTotalAmount(data) {
         return data.performances.reduce((total, p) => total + p.amount, 0);
