@@ -61,8 +61,7 @@ class PerformanceCalculator {
 
 class TragedyCalculator extends PerformanceCalculator {
     get amount() {
-        let result = 0;
-        result = 40000;
+        let result = 40000;
         if (this.performance.audience > 30) {
             result += 1000 * (this.performance.audience - 30);
         }
@@ -72,8 +71,7 @@ class TragedyCalculator extends PerformanceCalculator {
 
 class ComedyCalculator extends PerformanceCalculator {
     get amount() {
-        let result = 0;
-        result = 30000;
+        let result = 30000;
         if (this.performance.audience > 20) {
             result += 10000 + 500 * (this.performance.audience - 20);
         }
@@ -89,12 +87,12 @@ class ComedyCalculator extends PerformanceCalculator {
 //==============================================================================================================
 
 function createStatementData(invoice, plays) {
-    const statementData = {};
-    statementData.customer = invoice.customer;
-    statementData.performances = invoice.performances.map(enrichPerformance);
-    statementData.totalAmount = getTotalAmount(statementData);
-    statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-    return statementData;
+    const result = {};
+    result.customer = invoice.customer;
+    result.performances = invoice.performances.map(enrichPerformance);
+    result.totalAmount = getTotalAmount(result);
+    result.totalVolumeCredits = totalVolumeCredits(result);
+    return result;
 
     function enrichPerformance(aPerformance) {
         const calculator = createPerformanceCalculator(aPerformance, playFor(aPerformance));
